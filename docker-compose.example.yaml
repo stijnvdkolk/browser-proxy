@@ -1,0 +1,39 @@
+# Example Docker Compose configuration for browser-proxy
+# Copy this file to docker-compose.yaml and customize as needed
+
+services:
+  vpn-proxy:
+    # Option 1: Build locally
+    build: .
+
+    # Option 2: Use pre-built image from GitHub Container Registry
+    # image: ghcr.io/stijnvdkolk/browser-proxy:latest
+
+    # Option 3: Use pre-built image from Docker Hub
+    # image: stijnvdkolk/browser-proxy:latest
+
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    devices:
+      - /dev/net/tun
+    ports:
+      - '127.0.0.1:8888:8888'
+    volumes:
+      # Mount your OpenVPN configuration file here
+      - ./openvpn/client.ovpn:/etc/openvpn/client.ovpn:ro
+    environment:
+      - TZ=UTC
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    sysctls:
+      - net.ipv4.ip_forward=1
+    healthcheck:
+      test:
+        ['CMD', 'curl', '-x', 'localhost:8888', '-s', 'http://httpbin.org/ip']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

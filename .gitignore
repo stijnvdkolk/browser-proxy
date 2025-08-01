@@ -1,0 +1,35 @@
+# Docker Compose override files
+docker-compose.yaml
+docker-compose.override.yml
+
+# OpenVPN configuration files (contains sensitive data)
+openvpn/*
+!openvpn/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
